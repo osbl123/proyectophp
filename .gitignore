@@ -29,3 +29,9 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+
+
+#agregando modificacion para que ignore la carpeta node_modules
+node_modules/
+#agregando modificacio para que ignore la carpeta public
+public/
