@@ -33,5 +33,7 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 #agregando modificacion para que ignore la carpeta node_modules
 node_modules/
-#agregando modificacio para que ignore la carpeta public
+#agregando modificacion para que ignore la carpeta public
 public/
+#agregado para quitar package-lock.json
+package-lock.json
