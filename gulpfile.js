@@ -52,4 +52,9 @@ gulp.task('fonts',()=>{
 		.pipe(gulp.dest('public/fonts'));
 })
 
-gulp.task('default',['libsjs','checksass','checkjs','font-awesome','fonts']);
+gulp.task('fontsglyphicons',()=>{
+	return gulp.src('plantilla/fonts/*')
+		.pipe(gulp.dest('public/fonts'));
+})
+
+gulp.task('default',['libsjs','checksass','checkjs','font-awesome','fonts','fontsglyphicons']);

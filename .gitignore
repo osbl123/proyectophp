@@ -37,3 +37,6 @@ node_modules/
 public/
 #agregado para quitar package-lock.json
 package-lock.json
+
+#quitando el versioando al archivo database.php
+application/config/*.bak
