@@ -4,7 +4,7 @@ const sass = require('gulp-sass');
 gulp.task('sass',()=> {
 	return gulp.src([
 		'node_modules/bootstrap/scss/bootstrap.scss',
-		'plantilla/scss/*.scss'
+		'plantillas/scss/*.scss'
 	])
 	.pipe(sass({
 		outputStyle:'expanded'
@@ -15,20 +15,20 @@ gulp.task('sass',()=> {
 gulp.task('checksass',['sass'],()=> {
 	gulp.watch([
 		'node_modules/bootstrap/scss/bootstrap.scss',
-		'plantilla/scss/*.scss'
+		'plantillas/scss/*.scss'
 	],['sass']);
 })
 
 gulp.task('js',()=> {
 	return gulp.src([
-		'plantilla/js/*.js'
+		'plantillas/js/*.js'
 	])
 	.pipe(gulp.dest('public/js'));
 })
 
 gulp.task('checkjs',['js'],()=> {
 	gulp.watch([
-		'plantilla/js/*.js'
+		'plantillas/js/*.js'
 	],['js']);
 })
 
@@ -53,7 +53,7 @@ gulp.task('fonts',()=>{
 })
 
 gulp.task('fontsglyphicons',()=>{
-	return gulp.src('plantilla/fonts/*')
+	return gulp.src('plantillas/fonts/*')
 		.pipe(gulp.dest('public/fonts'));
 })
 
