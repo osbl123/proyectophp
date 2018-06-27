@@ -13,16 +13,16 @@
     <title>Sistema SGA C.E.T.A.</title>
     
     <!-- jQuery -->
-    <script src="<?= base_url()?>public/js/jquery.min.js"></script>
+    <script src="<?= base_url()?>plantillas/js/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="<?= base_url()?>public/js/bootstrap.min.js"></script>
+    <script src="<?= base_url()?>plantillas/js/bootstrap.min.js"></script>
 
     <!-- Bootstrap Core CSS -->
-    <link href="<?= base_url()?>public/css/bootstrap.css" rel="stylesheet">
-    <link href="<?= base_url()?>public/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url()?>plantillas/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= base_url()?>plantillas/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    <link rel="icon" type="image/gif" href="<?=base_url()?>plantillas/img/favicon.gif">
+    <link rel="icon" type="image/gif" href="<?=base_url()?>plantilla/img/favicon.gif">
 <script type="text/javascript">
 var Hoy = new Date("<?php echo date('d M Y G:i:s'); ?>");
 function Reloj(){ 

@@ -1,4 +1,4 @@
-<body>
+<body <?=$onLoad;?> >
     <div style="background-image: url(<?=base_url();?>plantillas/img/header.png); background-repeat: no-repeat; height: 100px; background-color: #2727C7; justify-content: flex-end; ">       
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-blueceta" >
@@ -17,11 +17,10 @@
               Inf. Académica
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item mr-sm-2" href="#">Historial Académico</a>
-              <a class="dropdown-item" href="#">Historial Semestralizado</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Horario de clases</a>
-              <a class="dropdown-item" href="#">Horario de evaluaciones</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/historial">Historial Académico</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/nota_semestral">Historial Semestralizado</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/horario_clases">Horario de clases</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/evaluacion">Horario de evaluaciones</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -29,8 +28,8 @@
               Horario
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Horario de clases</a>
-              <a class="dropdown-item" href="#">Horario de evaluaciones</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/horario_clases">Horario de clases</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/evaluacion">Horario de evaluaciones</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -53,12 +52,15 @@
 <main role="main" class="bar_state">
 <div class="row text-white bg-redceta" style="padding-right: 50px;">
     <div class="col col-md-auto"><strong>Estudiante: </strong><?= $nombre_est;?></div>
-    <div class="col col-md-auto"><strong>Codigo CETA: </strong><?= $cod_ceta;?></div>
+    <div class="col col-md-auto"><strong>Codigo CETA: </strong><span id="cod_ceta"><?= $cod_ceta;?></span></div>
     <div class="col col-md-auto"><strong>Carrera: </strong>Electricidad y Electrónica Automotriz</div>
     <div class="col col-md-auto" ><img src="<?= base_url()?>plantillas/img/watch2.png" width="32" height="32"><span id="Reloj"></span></div>
     <div class="col col-md-auto"><span id="Fecha"> <?= $fecha;?></span></div> 
 </div>    
 </main>
+<main role="main" class="container">    
+  <div class="row">   
+      <div class="col col-md-9 col-sm-12 col-12 sombra_div">  
 
 
             

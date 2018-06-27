@@ -11,11 +11,11 @@
 
     <title>WEB SGA - Estudiantes Intituto CETA</title>
 
-    <link rel="icon" type="image/gif" href="<?=base_url()?>plantillas/img/favicon.gif">
+    <link rel="icon" type="image/gif" href="<?=base_url()?>plantilla/img/favicon.gif">
     <!-- Bootstrap Core CSS -->
-    <link href="<?= base_url()?>public/css/bootstrap.css" rel="stylesheet">
-    <link href="<?= base_url()?>public/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <script src="<?= base_url()?>public/js/jquery.min.js"></script>
+    <link href="<?= base_url()?>plantillas/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= base_url()?>plantillas/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="<?= base_url()?>plantillas/js/jquery.min.js"></script>
 
         
 </head>
@@ -87,10 +87,10 @@
     </div>
 
 <!-- jQuery -->
-<script src="<?= base_url()?>public/js/jquery.min.js"></script>
+<script src="<?= base_url()?>plantillas/js/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="<?= base_url()?>public/js/bootstrap.min.js"></script>
+<script src="<?= base_url()?>plantillas/js/bootstrap.min.js"></script>
 
 <script >
 var baseurl="<?=base_url();?>";

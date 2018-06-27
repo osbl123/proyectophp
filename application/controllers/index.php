@@ -9,7 +9,6 @@ class Index extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->library('Fechas');
-		$this->load->model('consultas');
 	}
 
 	public function index()

@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-$config['base_url'] .= "://".$_SERVER['SERVER_NAME']."/proyectophp/";
+$config['base_url'] .= "://".$_SERVER['SERVER_NAME']."/estudiantes/";
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +36,7 @@ $config['base_url'] .= "://".$_SERVER['SERVER_NAME']."/proyectophp/";
 | variable so that it is blank.
 |
 */
-$config['index_page'] = '';
+$config['index_page'] = '';//'index.php';
 
 /*
 |--------------------------------------------------------------------------

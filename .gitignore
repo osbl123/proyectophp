@@ -29,14 +29,3 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
-
-
-#agregando modificacion para que ignore la carpeta node_modules
-node_modules/
-#agregando modificacion para que ignore la carpeta public
-public/
-#agregado para quitar package-lock.json
-package-lock.json
-
-#quitando el versioando al archivo database.php
-application/config/*.bak

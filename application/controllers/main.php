@@ -19,7 +19,7 @@ class Main extends CI_Controller
 		}
 
 		$fechaF = new Fechas();
-		$data= array('fecha'=>$fechaF->FechaFormateada(),'cod_ceta'=> $this->session->userdata('cod_est'),'nombre_est'=> $this->session->userdata('est_namefull'));
+		$data= array('fecha'=>$fechaF->FechaFormateada(),'cod_ceta'=> $this->session->userdata('cod_est'),'nombre_est'=> $this->session->userdata('est_namefull'),'onLoad'=>'');
 		$this->load->view("head"); 	
 		$this->load->view("nav", $data);
 		$this->load->view("main");
