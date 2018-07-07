@@ -19,6 +19,36 @@ class Consultas extends CI_Model
 		else
 			return $q->row()->name;			
 	}
+	public function login_admin($username,$password)
+	{
+		$this->db->select('activo');
+		$this->db->where('id_usuario',$username);//nombre del campo
+		$this->db->where('pass',$password);
+		$q=$this->db->get('usuario');//nombre de la tabla
+		if($q->num_rows()>0)
+		{
+			$fila=$q->row();				
+			if($fila->activo=='t')
+			{
+				$q=$this->db->query("SELECT nom_rol FROM asignacion_usuario WHERE id_usuario='".$username."'");	
+				if($q->num_rows()>0)
+				{
+					$fila=$q->row();				
+					return $fila->nom_rol;
+				}
+				else
+				{
+					return 'no_rol';
+				}
+			}
+			else
+				return 'false';	
+		} 
+		else
+		{
+			return null;
+		}
+	}
 	public function consulta_SQL($sql)
 	{
 		$consulta=$this->db->query($sql);
@@ -78,17 +108,17 @@ class Consultas extends CI_Model
 		echo $sql;
 		echo $q;
 	}
-	public function nombre_usuario($id_usuario)
-	{	
-		$sql="SELECT nombre||' '|| ap_paterno||' '||ap_materno as name FROM usuario WHERE id_usuario = '".$id_usuario."'";
-		$q=$this->db->query($sql);
-		if(is_null($q))
-			return '';
-		else
-			return $q->row()->name;
-		echo $sql;
-		echo $q;
-	}
+	// public function nombre_usuario($id_usuario)
+	// {	
+	// 	$sql="SELECT nombre||' '|| ap_paterno||' '||ap_materno as name FROM usuario WHERE id_usuario = '".$id_usuario."'";
+	// 	$q=$this->db->query($sql);
+	// 	if(is_null($q))
+	// 		return '';
+	// 	else
+	// 		return $q->row()->name;
+	// 	echo $sql;
+	// 	echo $q;
+	// }
 }
 
 
