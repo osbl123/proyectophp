@@ -44,6 +44,9 @@
             </div>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="<?=site_url('blog/index')?>"><i class="fa ti-notepad"></i> Blog</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="<?=site_url('index/logout')?>"><i class="fa fa-user fa-fw"></i> Salir</a>
           </li>
         </ul>        

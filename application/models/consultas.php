@@ -108,6 +108,37 @@ class Consultas extends CI_Model
 		echo $sql;
 		echo $q;
 	}
+
+	public function get_list_post() {
+		$this->db->order_by("id_entrada", "desc");
+		$query = $this->db->get('entrada'); 
+		
+        
+		if(is_null($query)) {
+			return array();
+		} else {
+			return $query->result();
+		}
+	}
+
+	public function get_post($enlace) {
+
+		$this->db->where("enlace", $enlace);
+		$query = $this->db->get('entrada'); 
+        
+		if(!is_null($query)) {
+			return $query->row();
+		}
+	}
+
+	public function get_docente($cod_docente) {
+		$this->db->where("cod_docente",$cod_docente);
+		$query = $this->db->get('docente'); 
+
+		return $query->row();
+	}
+
+
 	// public function nombre_usuario($id_usuario)
 	// {	
 	// 	$sql="SELECT nombre||' '|| ap_paterno||' '||ap_materno as name FROM usuario WHERE id_usuario = '".$id_usuario."'";
