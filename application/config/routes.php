@@ -55,4 +55,4 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 //ruteo por nombre
-$route['articulo/(:any)'] = 'post/detail/$1';
+$route['articulo/(:any)'] = 'blog/detail/$1';

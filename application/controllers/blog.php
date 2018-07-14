@@ -52,4 +52,15 @@ class Blog extends CI_Controller {
 		$this->load->view("post");
 		$this->load->view("footer");
     }
+
+    public function add_comment() {
+        $data = array (
+            'id_entrada' => $this->input->post('id_entrada'),
+            'autor' => $this->input->post('autor'),
+            'contenido' => $this->input->post('contenido'),
+            'fecha' => date('Y:m:d'),
+            'id_respuesta' => $this->input->post('id_respuesta')
+        );
+        $this->consultas->insert('comentario',$data);
+    }
 }

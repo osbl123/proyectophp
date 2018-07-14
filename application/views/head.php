@@ -22,6 +22,8 @@
     <link href="<?= base_url()?>plantillas/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url()?>plantillas/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <link href="<?= base_url()?>plantillas/css/estilos.css" rel="stylesheet" type="text/css">
+
     <link rel="icon" type="image/gif" href="<?=base_url()?>plantilla/img/favicon.gif">
 <script type="text/javascript">
 var Hoy = new Date("<?php echo date('d M Y G:i:s'); ?>");
