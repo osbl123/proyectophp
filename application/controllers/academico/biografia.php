@@ -20,7 +20,8 @@ class Biografia extends CI_Controller
 
 		$fechaF = new Fechas();
 		$get_datos=$this->buscar_inf_estudiante($this->session->userdata('cod_est'));
-		$data= array('fecha'=>$fechaF->FechaFormateada(),'cod_ceta'=> $this->session->userdata('cod_est'),'nombre_est'=> $this->session->userdata('est_namefull'),'datos'=>$get_datos,'onLoad'=>'');
+		$comunicados=$this->consultas->get_comunicados($this->session->userdata('cod_est'));
+		$data= array('fecha'=>$fechaF->FechaFormateada(),'cod_ceta'=> $this->session->userdata('cod_est'),'nombre_est'=> $this->session->userdata('est_namefull'),'datos'=>$get_datos,'onLoad'=>'','comunicados'=>$comunicados);
 		$this->load->view("head"); 	
 		$this->load->view("nav", $data);
 		$this->load->view("academico/biografia");

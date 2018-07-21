@@ -62,41 +62,6 @@ class Consultas extends CI_Model
 		}		
 		
 	}
-	public function get_caja($username)
-	{
-		//$this->db->pg_select(connection, table_name, assoc_array)
-		$this->db->select('monto,estado_caja');
-		$this->db->where('usuario_asignado',$username);//nombre del campo
-		$this->db->where('fecha',date('Y-m-d'));
-		$q=$this->db->get('caja');//nombre de la tabla
-		if($q->num_rows()>0)
-		{
-			$fila=$q->row();	
-			return $fila->monto.'/'.$fila->estado_caja;			
-		} 
-		else
-		{
-			return null;
-		}
-	}
-	public function abrir_caja($usuario)
-	{
-		$fecha=date('Y-m-d');
-		$where = array(
-			'usuario_asignado' =>$usuario, 
-			'fecha' =>$fecha,
-		);
-		$hora_apertura=date('H:i:s');
-		$data = array(	
-			'hora_apertura' =>$hora_apertura,
-			'estado_caja' =>'abierta',
-		);
-		if($this->config_model->update_table('caja',$data,$where))
-				{ echo 'exito';}
-			else
-				{echo 'No se actualizaron los datos de la Dosificación!!!';}	
-		
-	}
 	public function name_user($id_usuario)
 	{	
 		$sql="SELECT ap_paterno||' '||ap_materno||' '||nombre as name FROM usuario WHERE id_usuario = '".$id_usuario."'";
@@ -137,7 +102,19 @@ class Consultas extends CI_Model
 
 		return $query->row();
 	}
-
+	public function get_comunicados($cod_ceta) {
+		$sql="SELECT titulo, descripcion FROM est_avisos WHERE activo = 't' AND fecha_fin >= now() ORDER BY id_aviso";
+		$consulta=$this->db->query($sql);
+		if($consulta->num_rows()>0)
+		{
+			return $consulta;
+		}
+		else
+		{
+			return null;
+		}			
+		
+	}
 
 	// public function nombre_usuario($id_usuario)
 	// {	

@@ -17,6 +17,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= base_url()?>plantillas/js/bootstrap.min.js"></script>
+    <!-- <script src="<?= base_url()?>plantillas/js/autoscroll.min.js"></script> -->
+    <script type="text/javascript" src="<?= base_url()?>plantillas/js/autoscroll.min.js"></script>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url()?>plantillas/css/bootstrap.min.css" rel="stylesheet">
@@ -48,4 +50,5 @@ function Reloj(){
 } 
     setInterval("Reloj()",1000) ;
 </script>
+
 </head>

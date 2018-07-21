@@ -20,7 +20,8 @@ class Nota_semestral extends CI_Controller
 		$onload='onload="get_gestion();"';
 		$fechaF = new Fechas();
 		$pensum_estudiante=$this->get_carreras($this->session->userdata('cod_est'));
-		$data= array('fecha'=>$fechaF->FechaFormateada(),'cod_ceta'=> $this->session->userdata('cod_est'),'nombre_est'=> $this->session->userdata('est_namefull'),'onLoad'=>$onload);
+		$comunicados=$this->consultas->get_comunicados($this->session->userdata('cod_est'));
+		$data= array('fecha'=>$fechaF->FechaFormateada(),'cod_ceta'=> $this->session->userdata('cod_est'),'nombre_est'=> $this->session->userdata('est_namefull'),'onLoad'=>$onload,'comunicados'=>$comunicados);
 		$this->load->view("head"); 	
 		$this->load->view("nav", $data);
 		$data= array('carreras'=>$pensum_estudiante);
