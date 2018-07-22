@@ -103,11 +103,23 @@ class Consultas extends CI_Model
 		return $query->row();
 	}
 	public function get_comunicados($cod_ceta) {
-		$sql="SELECT titulo, descripcion FROM est_avisos WHERE activo = 't' AND fecha_fin >= now() ORDER BY id_aviso";
+		$sql="SELECT registro_inscripcion.cod_curso, semestre FROM registro_inscripcion INNER JOIN gestion ON gestion.gestion = registro_inscripcion.gestion INNER JOIN grupo ON grupo.gestion = gestion.gestion AND grupo.cod_pensum = registro_inscripcion.cod_pensum AND grupo.cod_grupo = registro_inscripcion.cod_curso WHERE cod_ceta = $cod_ceta AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC LIMIT 1";
 		$consulta=$this->db->query($sql);
 		if($consulta->num_rows()>0)
 		{
-			return $consulta;
+			$grupo=$consulta->row()->cod_curso;
+			$semestre=$consulta->row()->semestre;
+			$sql="(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE activo = 't' AND fecha_fin >= now() AND item = 'Todos')
+				UNION
+				(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE activo = 't' AND fecha_fin >= now() AND item = '$semestre')
+				UNION
+				(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE activo = 't' AND fecha_fin >= now() AND item = '$grupo')
+				ORDER BY  prioridad ASC,id_aviso ASC";
+			$consulta=$this->db->query($sql);
+			if($consulta->num_rows()>0)
+				return $consulta;
+			else
+				return null;
 		}
 		else
 		{
