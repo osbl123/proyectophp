@@ -11,7 +11,7 @@
 
     <title>WEB SGA - Estudiantes Intituto CETA</title>
 
-    <link rel="icon" type="image/gif" href="<?=base_url()?>plantilla/img/favicon.gif">
+    <link rel="icon" type="image/gif" href="<?=base_url()?>plantillas/img/favicon.gif">
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url()?>plantillas/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url()?>plantillas/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -46,13 +46,13 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" id="cod_estudiante" placeholder="Código CETA" autofocus >
+                                <input type="text" class="form-control" id="cod_estudiante" placeholder="Código CETA" autofocus onkeypress="return solo_numeros(event)">
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-asterisk"></i></span>
                                 </div>
-                                <input type="password" class="form-control" id="password" placeholder="Carnet de Identidad (C.I.)" >
+                                <input type="password" class="form-control" id="password" placeholder="Carnet de Identidad (C.I.)" onkeypress="return ci_format(event)">
                             </div>
                             <!-- <div class="alert alert-warning alert-dismissible" style="display: none;" id="show_error">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -93,14 +93,30 @@
 <script src="<?= base_url()?>plantillas/js/bootstrap.min.js"></script>
 
 <script >
+$(document).ready(function(){
+  $("#cod_estudiante").on('paste', function(e){
+    e.preventDefault();
+    alert('Esta acción está prohibida');
+  })
+  $("#password").on('paste', function(e){
+    e.preventDefault();
+    alert('Esta acción está prohibida');
+  })
+  // $("#bloquear").on('copy', function(e){
+  //   e.preventDefault();
+  //   alert('Esta acción está prohibida');
+  // })
+})
 var baseurl="<?=base_url();?>";
 $("#btn_send").click(function(e){
     e.preventDefault();
     $("#show_error").hide();
     habilitar(false);
     $("#btn_send").html('<span  class="fa fa-spinner fa-spin "></span >'); 
-    
-    $.post(baseurl+"index/login",
+    if(validar())
+    {
+
+        $.post(baseurl+"index/login",
             {   codigo:$("#cod_estudiante").val(),
                 password:$("#password").val(),            
             }, 
@@ -115,7 +131,59 @@ $("#btn_send").click(function(e){
                     $("#mensaje_error").html('El Código o Contraseña introducidos, no corresponden a un estudiante registrado, verifique sus datos.');
                 }
             });
+    }
+    else
+    {
+        $("#show_error").show();
+        $("#btn_send").html('Iniciar Sesión'); 
+        habilitar(true);                    
+    }
+
 });
+function solo_numeros(e) //controlamos que sea solo numero sin punto ni otros
+{
+    var keynum = window.event ? window.event.keyCode : e.which;
+    if ( keynum == 8 ) return true;
+    if ( keynum == 13 ) return true;
+    return /\d/.test(String.fromCharCode(keynum));
+}
+function ci_format(e) //controlamos que sea solo numero sin punto ni otros
+{
+    var keynum = window.event ? window.event.keyCode : e.which;
+    if ( keynum == 8 ) return true;
+    if ( keynum == 13 ) return true;
+    return /[A-Za-z0-9-]/.test(String.fromCharCode(keynum));
+}
+
+function validar() {
+    usuario=$("#cod_estudiante").val();
+    if(usuario!="")
+    {
+        if(usuario.length==9)
+        {
+            if($("#password").val().length>0)
+                return true;
+            else
+            {
+                // $("#show_error").show();
+                $("#mensaje_error").html('Introduzca su CONTRASEÑA por favor.');
+                return false;
+            }    
+        }
+        else
+        {
+            // $("#show_error").show();
+            $("#mensaje_error").html('El Código introducido no cumple con el tamaño del Código asignado por el Instituto, verifique sus datos.');
+            return false;
+        }
+    }
+    else
+    {
+        // $("#show_error").show();
+        $("#mensaje_error").html('Introduzca su CODIGO por favor.');
+        return false;
+    }
+}
 function habilitar(parametro)
 {
     $("#cod_estudiante").attr('disabled',!parametro);

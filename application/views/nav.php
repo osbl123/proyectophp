@@ -19,8 +19,8 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="<?= base_url()?>academico/historial">Historial Académico</a>
               <a class="dropdown-item" href="<?= base_url()?>academico/nota_semestral">Historial Semestralizado</a>
-              <a class="dropdown-item" href="<?= base_url()?>academico/horario_clases">Horario de clases</a>
-              <a class="dropdown-item" href="<?= base_url()?>academico/evaluacion">Horario de evaluaciones</a>
+             <!--  <a class="dropdown-item" href="<?= base_url()?>academico/horario_clases">Horario de clases</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/evaluacion">Horario de evaluaciones</a> -->
             </div>
           </li>
           <li class="nav-item dropdown">

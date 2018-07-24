@@ -26,7 +26,7 @@
 
     <link href="<?= base_url()?>plantillas/css/estilos.css" rel="stylesheet" type="text/css">
 
-    <link rel="icon" type="image/gif" href="<?=base_url()?>plantilla/img/favicon.gif">
+    <link rel="icon" type="image/gif" href="<?=base_url()?>plantillas/img/favicon.gif">
 <script type="text/javascript">
 var Hoy = new Date("<?php echo date('d M Y G:i:s'); ?>");
 function Reloj(){ 
