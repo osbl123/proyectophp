@@ -13,6 +13,7 @@ class Blog extends CI_Controller {
 		{
 			redirect(base_url().'index');
 		}
+        $comunicados=$this->consultas->get_comunicados($this->session->userdata('cod_est'));
 
 		$fechaF = new Fechas();
         $data= array(
@@ -21,9 +22,9 @@ class Blog extends CI_Controller {
             ,'nombre_est'=> $this->session->userdata('est_namefull')
             ,'onLoad'=>''
             ,'articulos'=>$this->consultas->get_list_post()
+            ,'comunicados'=>$comunicados
         );
         
-
 		$this->load->view("head",$data); 	
 		$this->load->view("nav");
 		$this->load->view("list_post");
@@ -35,16 +36,19 @@ class Blog extends CI_Controller {
 		{
 			redirect(base_url().'index');
 		}
+        $comunicados=$this->consultas->get_comunicados($this->session->userdata('cod_est'));
 
         $fechaF = new Fechas();
         $post = $this->consultas->get_post($enlace);
+        $autores = $this->consultas->get_post_autor($post->id_post);
         $data= array(
             'fecha'=>$fechaF->FechaFormateada()
             ,'cod_ceta'=> $this->session->userdata('cod_est')
             ,'nombre_est'=> $this->session->userdata('est_namefull')
             ,'onLoad'=>''
             ,'detalle'=>$post
-            ,'docente'=>$this->consultas->get_docente($post->cod_docente)
+            ,'docente'=> $autores->autor
+            ,'comunicados'=>$comunicados
         );
 
         $this->load->view("head",$data); 	

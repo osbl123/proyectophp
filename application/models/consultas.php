@@ -75,10 +75,9 @@ class Consultas extends CI_Model
 	}
 
 	public function get_list_post() {
-		$this->db->order_by("id_entrada", "desc");
-		$query = $this->db->get('entrada'); 
+		$this->db->order_by("fecha", "desc");
+		$query = $this->db->get('est_post'); 
 		
-        
 		if(is_null($query)) {
 			return array();
 		} else {
@@ -89,7 +88,7 @@ class Consultas extends CI_Model
 	public function get_post($enlace) {
 
 		$this->db->where("enlace", $enlace);
-		$query = $this->db->get('entrada'); 
+		$query = $this->db->get('est_post'); 
         
 		if(!is_null($query)) {
 			return $query->row();
@@ -109,11 +108,11 @@ class Consultas extends CI_Model
 		{
 			$grupo=$consulta->row()->cod_curso;
 			$semestre=$consulta->row()->semestre;
-			$sql="(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE activo = 't' AND fecha_fin >= now() AND item = 'Todos')
+			$sql="(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE habilitado = 't' AND fecha_fin >= now() AND item = 'Todos')
 				UNION
-				(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE activo = 't' AND fecha_fin >= now() AND item = '$semestre')
+				(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE habilitado = 't' AND fecha_fin >= now() AND item = '$semestre')
 				UNION
-				(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE activo = 't' AND fecha_fin >= now() AND item = '$grupo')
+				(SELECT est_avisos.id_aviso, prioridad, titulo, descripcion, item FROM est_avisos INNER JOIN est_avisos_poblacion ON est_avisos_poblacion.id_aviso = est_avisos.id_aviso WHERE habilitado = 't' AND fecha_fin >= now() AND item = '$grupo')
 				ORDER BY  prioridad ASC,id_aviso ASC";
 			$consulta=$this->db->query($sql);
 			if($consulta->num_rows()>0)
@@ -126,6 +125,21 @@ class Consultas extends CI_Model
 			return null;
 		}			
 		
+	}
+
+	public function get_post_autor($id_post) {
+
+		$sql = "select ep.id_post,string_agg(d.nombre, ', ') as autor
+from est_post_autor as ep
+inner join (
+	select concat(nombre|| ' '||apellido_p|| ' '||apellido_m) as nombre, cod_docente
+	from docente
+) as d on d.cod_docente = ep.cod_docente
+
+where id_post='$id_post'
+group by ep.id_post";
+		$consulta=$this->db->query($sql);
+		return $consulta->row();
 	}
 
 	// public function nombre_usuario($id_usuario)

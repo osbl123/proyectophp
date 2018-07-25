@@ -1,7 +1,7 @@
 
 <section>
     <h3><?php echo $detalle->titulo; ?></h3>
-    <strong>Author:</strong> <?= $docente->nombre." ".$docente->apellido_p." ".$docente->apellido_m ; ?> <br>
+    <strong>Author:</strong> <?= $docente ?> <br>
     <strong>Tema:</strong> <?= $detalle->tema ; ?> <br>
     <strong>Fecha Publicacion:</strong> <?= $detalle->fecha; ?>
     <?= $detalle->contenido;  ?>
@@ -10,7 +10,7 @@
 <section>
     <?php
         $attributes = array('class' => 'form_comment', 'id' => 'form_comment');
-        $hidden = array('id_entrada' => $detalle->id_entrada, 'id_respuesta' => '');
+        $hidden = array('id_post' => $detalle->id_post, 'id_respuesta' => '');
         echo form_open('blog/add_comment',$attributes,$hidden);
     ?>
 

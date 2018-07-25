@@ -92,11 +92,14 @@ class Evaluacion extends CI_Controller
 		        	$resultado.='    	<tbody>';	
 					$contador=1;
 					foreach ($get_horario_evaluacion -> result() as $horario) { 
+						$fecha_nueva= explode("-", $horario->fecha);
+                        $fecha_format=$fecha_nueva[2].'/'.$fecha_nueva[1].'/'.$fecha_nueva[0];
+
 						$resultado.='			<tr class="small">';
 				        $resultado.='            <td class="text-center">'.$contador.'</td>';
 				        $resultado.='            <td class="text-center">'.$horario->nombre_materia.'</td>';
 				        $resultado.='            <td class="text-center">'.$horario->sigla_materia.'</td>';
-				        $resultado.='            <td class="text-center">'.$horario->fecha.'</td>';
+				        $resultado.='            <td class="text-center">'.$fecha_format.'</td>';
 				        $resultado.='            <td class="text-center">'.$horario->hora.'</td>';
 				        $resultado.='            <td class="text-center">'.$horario->aula.'</td>';
 					    $resultado.='       	</tr>';

@@ -12,6 +12,7 @@
             <h2><?php 
                 echo anchor($url,$item->titulo ); 
             ?></h2>
+            <p><?=$item->descripcion?></p>
             <strong>Fecha Publicacion:</strong> <?= $item->fecha; ?>
     <?php
         endforeach;
