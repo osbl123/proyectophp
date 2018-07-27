@@ -12,8 +12,9 @@ class Blog extends CI_Controller {
         if(!$this->session->userdata('cod_est'))
 		{
 			redirect(base_url().'index');
-		}
-        $comunicados=$this->consultas->get_comunicados($this->session->userdata('cod_est'));
+        }
+        $cod_ceta = $this->session->userdata('cod_est');
+        $comunicados=$this->consultas->get_comunicados($cod_ceta);
 
 		$fechaF = new Fechas();
         $data= array(
@@ -21,7 +22,7 @@ class Blog extends CI_Controller {
             ,'cod_ceta'=> $this->session->userdata('cod_est')
             ,'nombre_est'=> $this->session->userdata('est_namefull')
             ,'onLoad'=>''
-            ,'articulos'=>$this->consultas->get_list_post()
+            ,'articulos'=>$this->consultas->get_list_post($cod_ceta)
             ,'comunicados'=>$comunicados
         );
         

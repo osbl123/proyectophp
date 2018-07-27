@@ -74,16 +74,7 @@ class Consultas extends CI_Model
 		echo $q;
 	}
 
-	public function get_list_post() {
-		$this->db->order_by("fecha", "desc");
-		$query = $this->db->get('est_post'); 
-		
-		if(is_null($query)) {
-			return array();
-		} else {
-			return $query->result();
-		}
-	}
+	
 
 	public function get_post($enlace) {
 
@@ -101,6 +92,45 @@ class Consultas extends CI_Model
 
 		return $query->row();
 	}
+
+
+	public function get_list_post($cod_ceta) {
+
+		$sql = "WITH datos AS (
+			SELECT registro_inscripcion.cod_curso, semestre 
+			FROM registro_inscripcion 
+			INNER JOIN gestion ON gestion.gestion = registro_inscripcion.gestion 
+			INNER JOIN grupo ON grupo.gestion = gestion.gestion AND grupo.cod_pensum = registro_inscripcion.cod_pensum AND grupo.cod_grupo = registro_inscripcion.cod_curso 
+			WHERE cod_ceta = '$cod_ceta' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC LIMIT 1
+		)
+		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
+				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
+		 FROM est_post as ep INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post WHERE activo = 't' and item = 'Todos'
+		)
+			UNION
+		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
+				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion 
+		 FROM est_post as ep INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post WHERE activo = 't' AND item in (select semestre from datos)
+		)
+			UNION
+		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
+				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
+		 FROM est_post as ep INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post WHERE activo = 't' AND item in (select cod_curso from datos)
+		)
+		ORDER BY fecha desc";
+
+
+		$consulta=$this->db->query($sql);
+
+		if($consulta->num_rows()>0)
+		{
+			return $consulta->result();
+		} else {
+			return null;
+		}
+	}
+
+
 	public function get_comunicados($cod_ceta) {
 		$sql="SELECT registro_inscripcion.cod_curso, semestre FROM registro_inscripcion INNER JOIN gestion ON gestion.gestion = registro_inscripcion.gestion INNER JOIN grupo ON grupo.gestion = gestion.gestion AND grupo.cod_pensum = registro_inscripcion.cod_pensum AND grupo.cod_grupo = registro_inscripcion.cod_curso WHERE cod_ceta = $cod_ceta AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC LIMIT 1";
 		$consulta=$this->db->query($sql);
