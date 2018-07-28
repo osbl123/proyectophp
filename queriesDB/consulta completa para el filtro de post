@@ -1,0 +1,63 @@
+WITH datos AS (
+	SELECT registro_inscripcion.cod_curso, semestre , registro_inscripcion.cod_pensum
+	FROM registro_inscripcion 
+	INNER JOIN gestion ON gestion.gestion = registro_inscripcion.gestion 
+	INNER JOIN grupo ON grupo.gestion = gestion.gestion 
+			AND grupo.cod_pensum = registro_inscripcion.cod_pensum 
+			AND grupo.cod_grupo = registro_inscripcion.cod_curso 
+	WHERE cod_ceta = '120060011' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC
+)
+, carreras as 
+(
+	SELECT distinct cod_pensum  from datos
+)
+(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
+ 		ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
+ FROM est_post as ep 
+ INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
+ 	WHERE activo = 't' and item = 'Todos'
+ 	and ep.carrera in (select cod_pensum from carreras)
+)
+	UNION
+(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
+ 		ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion 
+ FROM est_post as ep 
+ INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 		
+ WHERE activo = 't' AND item in (select semestre from datos where cod_pensum = ep.carrera)
+ 	and ep.carrera in (select cod_pensum from carreras)
+)	
+	UNION
+(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
+ 		ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
+ FROM est_post as ep 
+ INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
+ WHERE activo = 't' AND item in (select cod_curso from datos)
+ 	and ep.carrera in (select cod_pensum from carreras)
+)
+ORDER BY  fecha desc
+
+
+
+--120040001  1 registro
+--6542707
+--120060002   7 registros
+--120060011  13 registros
+
+/*
+select cod_ceta, count(cod_ceta) as counted
+from registro_inscripcion
+group by cod_ceta
+HAVING count(cod_ceta) > 5
+order by cod_ceta asc
+
+
+
+select * 
+from est_post
+where activo = true
+
+select *
+from est_post_poblacion
+where id_post = 30
+
+*/
