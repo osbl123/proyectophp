@@ -97,27 +97,42 @@ class Consultas extends CI_Model
 	public function get_list_post($cod_ceta) {
 
 		$sql = "WITH datos AS (
-			SELECT registro_inscripcion.cod_curso, semestre 
+			SELECT registro_inscripcion.cod_curso, semestre , registro_inscripcion.cod_pensum
 			FROM registro_inscripcion 
 			INNER JOIN gestion ON gestion.gestion = registro_inscripcion.gestion 
-			INNER JOIN grupo ON grupo.gestion = gestion.gestion AND grupo.cod_pensum = registro_inscripcion.cod_pensum AND grupo.cod_grupo = registro_inscripcion.cod_curso 
-			WHERE cod_ceta = '$cod_ceta' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC LIMIT 1
+			INNER JOIN grupo ON grupo.gestion = gestion.gestion 
+					AND grupo.cod_pensum = registro_inscripcion.cod_pensum 
+					AND grupo.cod_grupo = registro_inscripcion.cod_curso 
+			WHERE cod_ceta = '$cod_ceta' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC
+		)
+		, carreras as 
+		(
+			SELECT distinct cod_pensum  from datos
 		)
 		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
 				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
-		 FROM est_post as ep INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post WHERE activo = 't' and item = 'Todos'
+		 FROM est_post as ep 
+		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
+			 WHERE activo = 't' and item = 'Todos'
+			 and ep.carrera in (select cod_pensum from carreras)
 		)
 			UNION
 		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
 				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion 
-		 FROM est_post as ep INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post WHERE activo = 't' AND item in (select semestre from datos)
-		)
+		 FROM est_post as ep 
+		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 		
+		 WHERE activo = 't' AND item in (select semestre from datos where cod_pensum = ep.carrera)
+			 and ep.carrera in (select cod_pensum from carreras)
+		)	
 			UNION
 		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
 				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
-		 FROM est_post as ep INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post WHERE activo = 't' AND item in (select cod_curso from datos)
+		 FROM est_post as ep 
+		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
+		 WHERE activo = 't' AND item in (select cod_curso from datos)
+			 and ep.carrera in (select cod_pensum from carreras)
 		)
-		ORDER BY fecha desc";
+		ORDER BY  fecha desc";
 
 
 		$consulta=$this->db->query($sql);
