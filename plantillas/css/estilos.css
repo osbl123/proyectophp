@@ -4,6 +4,12 @@
   border-radius: 50%;
 }
 
+.imagen-sm {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
 .txt-comment {
   display: inline-block;
   width: 100%;
@@ -74,13 +80,32 @@
   font-size: 16px;
   font-weight: 500;
 }
+
 .AutoScroll {
-        background-color: #ffffd1;
-        /*color: #fff;*/
-        position: relative;
-        top: 0px;
-        max-height: 400px;
-        overflow-y: scroll;
-        padding: 20px;
-        /*border: 1px solid #121212;*/
-      }
+  background-color: #ffffd1;
+  /*color: #fff;*/
+  position: relative;
+  top: 0px;
+  max-height: 400px;
+  overflow-y: scroll;
+  padding: 20px;
+  /*border: 1px solid #121212;*/
+}
+
+.paginador {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.paginador li {
+  float: left;
+  margin: 0 3px;
+  background: #fff;
+  border: 1px solid #cccccc;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.paginador li a {
+  text-decoration: none;
+}

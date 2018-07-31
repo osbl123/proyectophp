@@ -42,6 +42,7 @@ ORDER BY  fecha desc
 --6542707
 --120060002   7 registros
 --120060011  13 registros
+--7960203
 
 /*
 select cod_ceta, count(cod_ceta) as counted

@@ -17,4 +17,11 @@
     <?php
         endforeach;
     ?>
+    <hr>
+    <div class="d-flex justify-content-center">   
+    <?php 
+        echo $this->pagination->create_links();     
+    ?>
+    </div>
+    
 </section>
