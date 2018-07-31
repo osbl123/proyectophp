@@ -12,12 +12,14 @@ class Consultas extends CI_Model
 
 	public function login_est($username,$password)
 	{
-		$sql="SELECT CONCAT(nombres,' ', ap_paterno,' ', ap_materno) as name FROM estudiante INNER JOIN  doc_presentados ON  doc_presentados.cod_ceta =  estudiante.cod_ceta WHERE estudiante.cod_ceta = $username AND numero_doc = '$password' AND nombre_doc = 'Carnet de identidad'";
+		$sql="SELECT nombres||' '|| ap_paterno||' '|| ap_materno as name FROM estudiante 
+		INNER JOIN  est_password ON  est_password.cod_ceta =  estudiante.cod_ceta WHERE estudiante.cod_ceta = $username AND est_password.password = md5('$password')";
+		//$sql="SELECT CONCAT(nombres,' ', ap_paterno,' ', ap_materno) as name FROM estudiante INNER JOIN  doc_presentados ON  doc_presentados.cod_ceta =  estudiante.cod_ceta WHERE estudiante.cod_ceta = $username AND numero_doc = '$password' AND nombre_doc = 'Carnet de identidad'";
 		$q=$this->db->query($sql);
-		if(is_null($q))
-			return '';
-		else
+		if($q->num_rows()>0)
 			return $q->row()->name;			
+		else
+			return '';
 	}
 	public function login_admin($username,$password)
 	{
@@ -185,6 +187,16 @@ where id_post='$id_post'
 group by ep.id_post";
 		$consulta=$this->db->query($sql);
 		return $consulta->row();
+	}
+	function update_table($tabla,$data,$where)
+	{
+		$this->db->where($where);
+		$this->db->update($tabla,$data);
+		// if($this->db->update($tabla,$data))
+		if($this->db->affected_rows()>0)
+			{return true;}
+		else
+			{return false;}
 	}
 
 	// public function nombre_usuario($id_usuario)
