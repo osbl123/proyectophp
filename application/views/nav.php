@@ -8,7 +8,7 @@
       </button>
 
       <div class="collapse navbar-collapse justify-content-md-end" id="navbarSupportedContent">
-        <ul class="navbar-nav ">
+        <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link " href="<?= base_url()?>academico/biografia">Biografía</a>
           </li>
@@ -43,12 +43,30 @@
               <a class="dropdown-item" href="#">Tema 3</a>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?=site_url('blog/index')?>"><i class="fa ti-notepad"></i> Blog</a>
+          <li class="nav-item ">
+            <a class="nav-link dropdown-toggle " href="<?=site_url('blog/index')?>">
+               Blog
+            </a>
+          </li>          
+         <!--  <li class="nav-item ">
+            <a class="nav-link dropdown-toggle " href="<?= base_url()?>perfil">
+              Modificar perfil
+            </a>
+          </li> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw"></i>
+              <?= $nombre_est;?>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="<?= base_url()?>perfil">Modificar Perfil</a>
+              <a class="dropdown-item" href="<?= base_url()?>contrasenia">Modificar Contraseña</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="<?=site_url('index/logout')?>">Salir</a>
+            </div>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="<?=site_url('index/logout')?>"><i class="fa fa-user fa-fw"></i> Salir</a>
-          </li>
+          </li> -->
         </ul>        
       </div>
     </nav>
