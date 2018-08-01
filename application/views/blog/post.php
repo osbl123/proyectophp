@@ -156,11 +156,12 @@ $(document).ready(function(){
 });
 //función para recargar el div mostrarComentarios cada 2 segundos
 $(document).ready(function(){
+    /*
     $("#mostrarComentarios").load("<?= base_url() ?>blog/get_comentarios_ajax", 
             { id_post: $("input[name=id_post]").val() }, function() {
             
         });
-    /*
+    */
     setInterval(function() {
         //$("#mostrarComentarios").load("<?= base_url() ?>blog/get_comentarios_ajax", function(){});
         $("#mostrarComentarios").load("<?= base_url() ?>blog/get_comentarios_ajax", 
@@ -168,19 +169,20 @@ $(document).ready(function(){
             
         });
     }, 2000);
-    */
+    
+    
 });
 
 $(document).ready(function(){
     $("#comentarioPublicado").hide();
     $('#spinner').hide();
-    $("#comentario-opciones").hide();
+    //$("#comentario-opciones").hide();
 
     $("#comentario").focusin(function() {
-        $("#comentario-opciones").show();
+        //$("#comentario-opciones").show();
     });
     $("#comentario").focusout(function() {
-        $("#comentario-opciones").hide(); 
+        //$("#comentario-opciones").hide(); 
     });
 
 });

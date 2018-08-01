@@ -245,7 +245,7 @@ class Consultas extends CI_Model
 			select CONCAT(nombres||' '||ap_paterno||' '||ap_materno) as nombre, cod_ceta
 			from estudiante
 		) as e on epc.cod_ceta=e.cod_ceta
-		where id_post = $id_post";
+		where id_post = $id_post and id_respuesta is null";
 		$consulta=$this->db->query($sql);
 		return $consulta->result();
 		/*
