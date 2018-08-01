@@ -31,7 +31,8 @@
 				  <form >
 				    <div class="form-group">
 				      <label for="password1" >Contraseña Nueva:</label>
-				        <input type="password" class="form-control" id="password1" placeholder="Contraseña nueva" data-pattern="^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$">
+				        <input type="password" class="form-control" id="password1" placeholder="Contraseña nueva" data-pattern="[A-Za-z\d$@$!%*?&]{7,15}">
+				        <!-- <input type="password" class="form-control" id="password1" placeholder="Contraseña nueva" data-pattern="^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{7,500}$"> -->
 						<span id="span_password1" class="invalid-feedback" style="display:none;"></span>
 				    </div>
 				    <div class="form-group">
@@ -86,7 +87,7 @@ $("#btn_send").click(function(e){
     	habilitar(false);
 
     	$("#btn_send").html('<span  class="fa fa-spinner fa-spin "></span >'); 
-        $.post(baseurl+"contrasenia/login",
+        $.post(baseurl+"perfil/contrasenia/login",
             {   codigo:$("#cod_ceta").html(),
                 password:$("#password").val(),            
             }, 
@@ -102,7 +103,7 @@ $("#btn_send").click(function(e){
                     $("#show_error").show();
                     $("#btn_send").html('Iniciar Sesión'); 
                     habilitar(true);
-                    $("#show_error").html('La Contraseña introducidos, no corresponden a un estudiante registrado, verifique sus datos.');
+                    $("#show_error").html('La Contraseña introducida, no corresponden a un estudiante registrado, verifique sus datos.');
                 }
             });
     }
@@ -137,7 +138,7 @@ $("#btn_modificar").click(function(e){
 $("#btn_confirmado").click(function(e){
     e.preventDefault();
 	$("#btn_confirmado").html('<span  class="fa fa-spinner fa-spin "></span >'); 
-        $.post(baseurl+"contrasenia/update_password",
+        $.post(baseurl+"perfil/contrasenia/update_password",
             {   codigo:$("#cod_ceta").html(),
                 password1:$("#password1").val(),            
             }, 
@@ -148,7 +149,8 @@ $("#btn_confirmado").click(function(e){
                 {
                 	mensaje_aux='<div  class="text-center alert alert-success" role="alert"><h1><span class="fa fa-exclamation-triangle"></span></h1><span> Cambio realizado con éxito.</span></div>';
 					$('#mensaje').html(mensaje_aux);
-        			$("#data").hide();
+        			$("#btn_modificar").attr('disabled',true);
+        			$("#btn_modificar").html('Realizado');
                 }
                 else
                 {
@@ -169,7 +171,7 @@ function validar_element(elemento,tipo,mensaje,span_error)
 		control=true
 		
 		
-		if((str.length<8)||(str.length>16))
+		if(str.length<7)
 		{
 			mensaje_alerta+=' La contraseña debe tener entre 8 y 16 caracteres.';
 			control=false;

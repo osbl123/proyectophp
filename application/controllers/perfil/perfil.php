@@ -20,7 +20,7 @@ class Perfil extends CI_Controller
 		$data= array('fecha'=>$fechaF->FechaFormateada(),'cod_ceta'=> $this->session->userdata('cod_est'),'nombre_est'=> $this->session->userdata('est_namefull'),'onLoad'=>'','comunicados'=>$comunicados);
 		$this->load->view("head"); 	
 		$this->load->view("nav", $data);
-		$this->load->view("perfil");
+		$this->load->view("perfil/perfil");
 		$this->load->view("footer");
 	}
 	public function get_datos()

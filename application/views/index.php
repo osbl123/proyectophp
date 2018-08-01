@@ -53,15 +53,16 @@
                                     <span class="input-group-text"><i class="fa fa-asterisk"></i></span>
                                 </div>
                                 <input type="password" class="form-control" id="password" placeholder="Carnet de Identidad (C.I.)" onkeypress="return ci_format(event)">
-                            </div>
-                            <!-- <div class="alert alert-warning alert-dismissible" style="display: none;" id="show_error">
-                                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                <h6 class="text-danger" id="mensaje_error"></h6>
-                            </div> -->
+                            </div>                            
                             <div  style="display: none;" class="text-center" id="show_error">
                                 <h6 class="text-danger" id="mensaje_error"></h6>
                             </div>
+                            <div  class="input-group mb-3">
                                 <button class="btn btn-primary btn-block" id="btn_send">Iniciar Sesión</button>
+                            </div>
+                            <div class="input-group mb-3 text-center">
+                                    <a class="alert-link" href="<?= base_url()?>perfil/forget_password">¿Haz olvidado tu contraseña?</a>
+                            </div>
                         </form>
                     </div>
                 </div>

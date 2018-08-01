@@ -14,6 +14,7 @@
     
     <!-- jQuery -->
     <script src="<?= base_url()?>plantillas/js/jquery.min.js"></script>
+    <script src='<?= base_url()?>plantillas/js/jquery.Jcrop.js'></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= base_url()?>plantillas/js/bootstrap.min.js"></script>
@@ -25,6 +26,7 @@
     <link href="<?= base_url()?>plantillas/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link href="<?= base_url()?>plantillas/css/estilos.css" rel="stylesheet" type="text/css">
+    <link rel='stylesheet' href='<?= base_url();?>plantillas/css/jquery.Jcrop.css' type='text/css' />
 
     <link rel="icon" type="image/gif" href="<?=base_url()?>plantillas/img/favicon.gif">
 <script type="text/javascript">

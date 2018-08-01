@@ -18,7 +18,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="<?= base_url()?>academico/historial">Historial Académico</a>
-              <a class="dropdown-item" href="<?= base_url()?>academico/nota_semestral">Historial Semestralizado</a>
+              <a class="dropdown-item" href="<?= base_url()?>academico/nota_semestral">Kardex Semestralizado</a>
              <!--  <a class="dropdown-item" href="<?= base_url()?>academico/horario_clases">Horario de clases</a>
               <a class="dropdown-item" href="<?= base_url()?>academico/evaluacion">Horario de evaluaciones</a> -->
             </div>
@@ -56,8 +56,8 @@
               <?= $nombre_est;?>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="<?= base_url()?>perfil">Modificar Perfil</a>
-              <a class="dropdown-item" href="<?= base_url()?>contrasenia">Modificar Contraseña</a>
+              <a class="dropdown-item" href="<?= base_url()?>perfil/perfil">Modificar Perfil</a>
+              <a class="dropdown-item" href="<?= base_url()?>perfil/contrasenia">Modificar Contraseña</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="<?=site_url('index/logout')?>">Salir</a>
             </div>
