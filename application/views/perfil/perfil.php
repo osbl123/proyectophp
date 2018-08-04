@@ -1,5 +1,5 @@
 <div class="cart cart-primary table-responsive" >
-	<div class="container-fluid" id="log_in_" >
+	<div class="container-fluid" id="log_in_"  style="display: none;">
 		<div class="card bg-default  col-md-6 offset-md-3">
             <div class="card-body">
                 <h5 class="text-center">Por su seguridad identifíquese por favor</h5>
@@ -17,7 +17,7 @@
             </div>
         </div>
 	</div>
-	<div  id="data" style="display: none;">
+	<div  id="data">
 		<div class="cart-heading">
 			<h3 class="text-center"><strong>Modificar Perfil</strong></h3>	        		
 		</div>
@@ -94,7 +94,7 @@
         </div>
     <?php echo form_open('croper/crop',"onsubmit='return checkCoords();'"); ?>
         
-        <img id="imagen_preview" width="250" height="200" id="cropbox" src="<?=base_url();?>plantillas/gallery/user0.jpg">        
+        <img width="640" height="480" id="cropbox" src="<?=base_url();?>plantillas/gallery/user0.jpg">        
      <input type='hidden' id='x' name='x' />
     <input type='hidden' id='y' name='y' />
     <input type='hidden' id='w' name='w' />
@@ -113,16 +113,16 @@
   </div>
 </div>
 <script>
-$(function(){
+// $(function(){
     
-    $('#cropbox').Jcrop({
-        aspectRatio: 0,
-        minSize: [ 227, 180 ],
-        maxSize: [ 227, 180 ],
-        onSelect: updateCoords
-    });
+    // $('#cropbox').Jcrop({
+    //     aspectRatio: 0,
+    //     // minSize: [ 227, 180 ],
+    //     // maxSize: [ 227, 180 ],
+    //     onSelect: updateCoords
+    // });
     
-    });
+    // });
     
     function updateCoords(c)
     {
@@ -138,13 +138,28 @@ $(function(){
         alert('Please select a crop region then press submit.');
         return false;
     };
+var jcrop_api;
+// function initJcrop()
+//     {
+//         jcrop_api = $.Jcrop('#cropbox');
+//     };
 function filePreview(input) {
     if (input.files && input.files[0]) {
+        if (typeof jcrop_api !== 'undefined')
+        jcrop_api.destroy();
         var reader = new FileReader();
         reader.onload = function (e) {
             $('#leyenda_files').val(input.files[0].name);
-            $('#imagen_preview').attr('src',e.target.result);
-            $('#imagen_preview').show();
+            $('#cropbox').attr('src',e.target.result);
+            $('#cropbox').show();
+            // initJcrop();
+            $('#cropbox').Jcrop({
+                // onChange: showPreview,
+                 // onSelect: showPreview,
+                    setSelect:   [ 100, 100, 50, 50 ],
+                    aspectRatio: 1,
+                    onSelect: updateCoords
+                },function(){ jcrop_api=this});
         }
         reader.readAsDataURL(input.files[0]);
     }

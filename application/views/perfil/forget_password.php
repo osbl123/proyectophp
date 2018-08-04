@@ -114,6 +114,9 @@
 
                        
                     </div>
+                    <div class="card-footer text-muted">
+                    <a class="btn btn-info btn-block" href="<?= base_url()?>" role="button">Retornar</a>
+                    </div>
                 </div>
             </div>
         </div>
