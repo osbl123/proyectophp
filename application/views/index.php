@@ -37,7 +37,7 @@
                 <div class="card bg-default">
                     <div class="card-header text-center bg-primary">
                         <b class="text-white">Bienvenido al Sistema de Información al Estudiante.</b>
-                        <h2 class="card-title text-center" ><font color="white"><b>MECANICA AUTOMOTRIZ</b></font></h2> 
+                        <!-- <h2 class="card-title text-center" ><font color="white"><b>MECANICA AUTOMOTRIZ</b></font></h2>  -->
                     </div>
                     <div class="card-body">
                         <h5 class="text-center">Por favor identifiquese</h5>
@@ -61,7 +61,7 @@
                                 <button class="btn btn-primary btn-block" id="btn_send">Iniciar Sesión</button>
                             </div>
                             <div class="input-group mb-3 text-center">
-                                    <a class="alert-link" href="<?= base_url()?>perfil/forget_password">¿Haz olvidado tu contraseña?</a>
+                                    <a class="alert-link" href="<?= base_url()?>perfil/forget_password">¿Has olvidado tu contraseña?</a>
                             </div>
                         </form>
                     </div>
@@ -71,7 +71,7 @@
                 <div class="col-lg-12 col-xl-8 offset-xl-2">
                     <div class="card ">                    
                         <div class="card-header bg-warning">
-                            <h3 class="card-title text-center text-red"><strong>INSTRUCCIONES</strong></h3>
+                            <h5 class="card-title text-center text-red"><strong>Instrucciones</strong></h5>
                         </div>
                         <div class="card-body">
                             <img src="<?= base_url()?>plantillas/img/llave.png" width="30" height="30">&nbsp;&nbsp;En el campo <strong>Código CETA</strong> debe ingresar su código de estudiante proporcionado por el Instituto al momento de su inscripción y consta de 9 digitos <br>

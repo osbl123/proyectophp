@@ -25,7 +25,7 @@
 			
 			<div class="container col-md-6 offset-md-3">
 					<div  class="text-center alert alert-success" role="alert">
-						La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. NO puede tener otros símbolos.
+						La contraseña debe tener mínimo 7 caracteres alfanuméricos.
 		                    </div>
 				<div>
 				  <form >
