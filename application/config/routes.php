@@ -55,7 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 //ruteo por nombre
-$route['articulo/(:any)'] = 'blog/detail/$1';
+$route['post/(:any)'] = 'blog/detail/$1';
 //ruteo para las paginas
-$route['post/pagina'] = 'blog/index';
-$route['post/pagina/(:num)'] = 'blog/index/$1';
+$route['publicaciones/pagina'] = 'blog/index';
+$route['publicaciones/pagina/(:num)'] = 'blog/index/$1';

@@ -245,7 +245,7 @@ class Consultas extends CI_Model
 			select CONCAT(nombres||' '||ap_paterno||' '||ap_materno) as nombre, cod_ceta
 			from estudiante
 		) as e on epc.cod_ceta=e.cod_ceta
-		where id_post = $id_post and id_respuesta is null";
+		where id_post = $id_post";
 		$consulta=$this->db->query($sql);
 		return $consulta->result();
 		/*
@@ -257,7 +257,68 @@ class Consultas extends CI_Model
 		}
 		*/
 	}
-	
+	function get_respuestas_by_idP($id_post,$id_com_padre,$cantidad) {
+		$full_sql = "select id_comentario, respuestas 
+		from (
+			%s
+		) as res
+		where respuestas > 0";
+
+		$sql = "select e.id_comentario,(select count(1) as respuestas from est_post_comentario as epc where epc.id_respuesta=e.id_comentario)
+		from est_post_comentario as e
+		where e.id_post = {$id_post}";
+		$idP_no_vacio = !is_null($id_com_padre) && $id_com_padre!='0';
+		if($idP_no_vacio) {
+			$sql .= "and id_respuesta = {$id_com_padre}";
+		} else {
+			$sql .= "and id_respuesta is null";
+		}
+
+		$consulta=$this->db->query(sprintf($full_sql,$sql));
+		return $consulta->result();
+	}
+
+	function get_comentarios_by_idP($id_post,$id_com_padre,$cantidad) {
+
+
+		$sql_count = "select count(1) as cantidad
+		from est_post_comentario
+		where id_post = {$id_post}";
+
+		$idP_no_vacio = !is_null($id_com_padre) && $id_com_padre!='0';
+		if($idP_no_vacio) {
+			$sql_count .= "and id_respuesta = {$id_com_padre}";
+		} else {
+			$sql_count .= "and id_respuesta is null";
+		}
+		$consulta=$this->db->query($sql_count);
+		$cant_act = $consulta->row()->cantidad;
+
+		$diferencia = intval($cant_act - $cantidad);
+
+		if($diferencia > 0) {
+			$sql = "select epc.id_comentario,epc.id_post,e.nombre,e.cod_ceta,epc.contenido,epc.id_respuesta,epc.fecha
+			,(select count(*) as res from est_post_comentario where id_respuesta=epc.id_comentario)
+			from est_post_comentario as epc
+			inner join (
+				select CONCAT(nombres||' '||ap_paterno||' '||ap_materno) as nombre, cod_ceta
+				from estudiante
+			) as e on epc.cod_ceta=e.cod_ceta
+			where epc.id_post = {$id_post}";
+			if($idP_no_vacio) {
+				$sql .= "and id_respuesta = {$id_com_padre} ";
+			} else {
+				$sql .= "and id_respuesta is null ";
+			}
+			$sql .= " order by epc.fecha desc
+			limit {$diferencia} offset 0";
+
+			$consulta=$this->db->query($sql);
+			return $consulta->result();
+		} else {
+			return array();
+		}
+	}
 	function insert_table($tabla,$data)
 	{
 		if($this->db->insert($tabla,$data))

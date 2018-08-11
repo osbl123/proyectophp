@@ -25,7 +25,7 @@ class Blog extends CI_Controller {
         $lista_post = $this->consultas->get_list_post($cod_ceta,$inicio,$limite);
         $comunicados=$this->consultas->get_comunicados($cod_ceta);
 
-        $config['base_url'] = base_url() . 'post/pagina/';
+        $config['base_url'] = base_url() . 'publicaciones/pagina/';
         $config['total_rows'] =$this->consultas->count_list_post($cod_ceta);//Numero total de filas
         $config['per_page'] = $limite;//Numero de entradas por pagina
         $config['use_page_numbers'] = TRUE;
@@ -112,14 +112,11 @@ class Blog extends CI_Controller {
         } else {
             if($this->session->userdata('cod_est')) {
                 $id_respuesta = null;
-                if($this->session->userdata('id_respuesta')) {
-                    $id_respuesta  = $this->session->userdata('id_respuesta');
-                }
                 $data = array(
                     'id_post' => $this->input->post('id_post'),
                     'cod_ceta' => $this->session->userdata('cod_est'),
                     'contenido' => $this->input->post('comentario'),
-                    'fecha' => date("Y-m-d"),
+                    'fecha' => date('Y-m-d H:i:s'),
                     'id_respuesta' => $id_respuesta
                 );
                 $this->consultas->insert_table('est_post_comentario',$data);
@@ -134,54 +131,20 @@ class Blog extends CI_Controller {
         $this->form_validation->set_message('required', 'La %s es obligatoria');
         $this->form_validation->set_message('min_length', 'La %s debe tener al menos %s carácteres');
         if($this->session->userdata('cod_est')) {
-                $id_respuesta = null;
+            $id_respuesta = null;
             if($this->input->post('id_respuesta')) {
-                $id_respuesta  = $this->session->userdata('id_respuesta');
+                $id_respuesta  = $this->input->post('id_respuesta');
             }
             $data = array(
                 'id_post' => $this->input->post('id_post_respuesta'),
                 'cod_ceta' => $this->session->userdata('cod_est'),
                 'contenido' => $this->input->post('respuesta-text'),
-                'fecha' => date("Y-m-d"),
-                'id_respuesta' => $this->input->post('id_respuesta')
+                'fecha' => date("Y-m-d H:i:s"),
+                'id_respuesta' => $id_respuesta
             );
             $this->consultas->insert_table('est_post_comentario',$data);
         }
     }
-    /*
-  
-    
-                <li class="d-flex">
-                    <a >
-                        <span >
-                            <img class="imagen" src="<?php //echo base_url() ?>/plantillas/img/admin.jpg" alt="imagen" />
-                        </span>
-                    </a>
-                    <div class="ml-3">
-                        <div>
-                            <span>
-                                <strong>John Smith</strong>
-                                <span class="time">3 mins ago</span>
-                            </span>
-                        </div>
-                        <div class="mt-2">
-                            <span class="message">
-                            Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
-                            </span>
-                        </div>
-                        <div>
-                            <a href="">
-                            <strong>
-                                Ver las 2 respuesta
-                            </strong>
-                            <span class="fa fa-chevron-right" ></span>
-                        </a>
-                        </div>
-                    </div>
-                </li>
-            <
-            
-    */
 
     //mostramos los comentarios con ajax con esta función
     function get_comentarios_ajax() {
@@ -250,10 +213,58 @@ class Blog extends CI_Controller {
             }
         }
     } 
+    //Creo que esta funcion no se utiliza revisar y eliminar si no se utiliza
     function get_resuestas_ajax() {
         $id_comentario = $this->input->post('id_comentario');
         ?>
         <h6><?= 'la debe mostrar comentario:'.$id_comentario; ?></h6>     
         <?php
+    }
+
+    function actualizar_comentarios() {
+        $id_post = $this->input->post('id_post');
+        $data = $this->input->post('com');
+        $string = '';
+
+
+        $datos = array();
+        foreach ($data as $item ) {
+            $array = array();
+            $id_padre = $item['id_padre'];
+            $cantidad = $item['cantidad'];
+            $mostrar = $item['mostrar'] === 'true' ?TRUE:FALSE;
+
+            if($mostrar) {
+                $array['id_padre'] = $id_padre;
+                $array['nuevos_comentarios'] = $this->consultas->get_comentarios_by_idP($id_post,$id_padre,$cantidad);
+                $array['respuestas'] = $this->consultas->get_respuestas_by_idP($id_post,$id_padre,$cantidad);
+
+                $datos[] = $array;
+            }
+        }
+
+        echo json_encode($datos);
+    }
+
+    function registrar_denuncia() {
+        if($this->session->userdata('cod_est')) {
+            $id_comentario = $this->input->post('id_comentario');
+            $data = array(
+                'id_comentario' => $id_comentario,
+                'cod_ceta' => $this->session->userdata('cod_est'),
+                'descripcion' => $this->input->post('respuesta-text'),
+            );
+            $this->consultas->insert_table('est_comentario_denuncia',$data);
+
+            $data = array(
+                'denuncia' => TRUE
+            );
+            $success = $this->consultas->update_table('est_post_comentario',$data,'id_comentario='.$id_comentario);
+            if($success) {
+                echo 'exito al bloquear al estudiante';
+            } else {
+                echo 'fallo al bloquear al estudiante';
+            }
+        }
     }
 }

@@ -17,14 +17,20 @@
 		</div>
 	</div>
 </main>   
-   
-
-
-</body>
-
-</html>
- <script type="text/javascript">
+<script type="text/javascript">
  	var baseurl="<?=base_url();?>";
       $(".comunicados").scroller();
  	
  </script>
+    <?php 
+    if($this->uri->segment(1)=='post') { 
+        ?>
+        <script src="<?= base_url() ?>plantillas/js/post_detalle.js"></script>
+    <?php
+        }
+    ?>
+
+</body>
+
+</html>
+ 

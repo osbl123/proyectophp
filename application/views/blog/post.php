@@ -5,16 +5,17 @@
     <strong>Tema:</strong> <?= $detalle->tema ; ?> <br>
     <strong>Fecha Publicacion:</strong> <?= $detalle->fecha; ?>
     <?= $detalle->contenido;  ?>
-
-    <hr>
-    
 </section>
+
+<?php 
+if($detalle->permite_comentario == 't') {
+?>
 <section>
+    <hr>
     <?php
         $attributes = array('class' => 'form_comment', 'id' => 'formularioComentar');
         $hidden = array(
             'id_post' => $detalle->id_post
-            //,'id_respuesta' => ''
         );
         echo form_open('blog/nuevo_comentario',$attributes,$hidden);
     ?>
@@ -24,7 +25,7 @@
         <span><?php echo validation_errors(); ?></span>
         <div id="comentarios" class="d-flex align-items-center">
             <div class="align">
-                <img src="<?= base_url(); ?>plantillas/img/usuario2.png" class="imagen" alt="Imagen estudiante">
+                <img src="<?= base_url(); ?>plantillas/gallery/<?= $cod_ceta;?>.jpg" class="imagen" alt="Imagen estudiante">
             </div>
             <div class="w-100 pl-3">
                 <div>
@@ -42,7 +43,7 @@
         </div>
         <!-- Fin fomulario -->
         <!--mostramos un mensaje conforme se ha publicado el comentario-->
-        <div id="comentarioPublicado" class="alert alert-success">Comentario publicado</div>
+        <div id="msg_comentario" class="alert alert-success">Comentario publicado</div>
         <!--fin del mensaje-->
     </div>
     <?= form_close(); ?> 
@@ -50,35 +51,37 @@
 </section>
 <section>
     <!--mostramos los comentarios si es que los hay-->      
-    <div id="mostrarComentarios" ></div>
+    <div id="mostrar_respuesta" >
+        <ul class="list-unstyled msg_list" id="list_coment_0" >
+        </ul>
+    </div>
         <!--fin del div que muestra los comentarios-->
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Escribe tu respuesta</h5>
+        <h5 class="modal-title" id="lbl_titulo_modal"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <?php 
       $attributes = array('class' => 'form_comment', 'id' => 'formularioResponder');
-      $hidden = array(
-          'id_post_respuesta' => $detalle->id_post,
-          'id_respuesta' => ''
-      );
-      echo form_open('blog/nueva_respuesta',$attributes,$hidden);
+
+      echo form_open('blog/nueva_respuesta',$attributes);
       ?>
-      <form>
       <div class="modal-body">
           <div class="form-group">
 
-            <label for="message-text" class="col-form-label">Respuesta:</label>
+            <label for="message-text" class="col-form-label" id="lbl_modal">Respuesta:</label>
             <textarea class="form-control" id="respuesta-text" name="respuesta-text" required></textarea>
           </div>
       </div>
       <div class="modal-footer">
+          <input type="hidden" name="id_post_respuesta" id="id_post_respuesta" value="<?= $detalle->id_post; ?>">
+          <input type="hidden" name="id_operacion" id="id_operacion" value="">
+          <input type="hidden" name="tipo_operacion" id="tipo_operacion" value="">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <input type="submit" value="Enviar" class="btn btn-primary"/>
         <!-- 
@@ -90,112 +93,12 @@
   </div>
 </div>
 </section>
-
-<script>
-
-$(function(){
-    $('#formularioResponder').on('submit', function(e){
-        e.preventDefault();
-
-        if( $("#respuesta-text").val().length <= 5){
-            $("#respuesta-text").focus().after(alert('Escriba como mínimo 5 carácteres para el comentario'));
-            return false;
-        }else{
-            $.ajax({
-                url: $(this).attr("action"), //this is the submit URL
-                type: 'POST', 
-                data: $('#formularioResponder').serialize(),
-                success: function(data){
-                    console.log('successfully '+data);
-                    //alert();
-                }
-            });
-            $("#exampleModal").modal('hide');
-        }
-    });
-});
-
-
-//función para insertar un nuevo comentario
-$(document).ready(function(){
-    $("#formularioComentar").submit(function(e){
-        e.preventDefault();
-
-        $('#comentario').prop('disabled', true);
-        $('#spinner').show();
-
-        if( $("#comentario").val().length <= 5){
-            $("#comentario").focus().after(alert('Escriba como mínimo 6 carácteres para el comentario'));
-            return false;
-        }else{
-            $.ajax({
-                url: $(this).attr("action"),
-                type: $(this).attr("method"), 
-                data: {
-                    comentario:$("#comentario").val()
-                    //$('#h_v').val();
-                    ,id_post:$("input[name=id_post]").val()
-                },
-                success:function(data){ 
-                    console.log(" el data es: "+data+" eso");
-
-                    $('#comentario').prop('disabled', false);
-                    $('#spinner').hide();
-
-                    $('#comentario').val('');    
-                    $('#comentario').focus();
-                    //$("#comentario").attr("value", "").focus(); 
-
-                    $("#comentarioPublicado").delay(500).show(0);
-                    $("#comentarioPublicado").delay(4000).hide(0);
-                }
-            }); 
-            return false;
-        }
-    });              
-});
-//función para recargar el div mostrarComentarios cada 2 segundos
-$(document).ready(function(){
-    /*
-    $("#mostrarComentarios").load("<?= base_url() ?>blog/get_comentarios_ajax", 
-            { id_post: $("input[name=id_post]").val() }, function() {
-            
-        });
-    */
-    setInterval(function() {
-        //$("#mostrarComentarios").load("<?= base_url() ?>blog/get_comentarios_ajax", function(){});
-        $("#mostrarComentarios").load("<?= base_url() ?>blog/get_comentarios_ajax", 
-            { id_post: $("input[name=id_post]").val() }, function() {
-            
-        });
-    }, 2000);
-    
-    
-});
-
-$(document).ready(function(){
-    $("#comentarioPublicado").hide();
-    $('#spinner').hide();
-    //$("#comentario-opciones").hide();
-
-    $("#comentario").focusin(function() {
-        //$("#comentario-opciones").show();
-    });
-    $("#comentario").focusout(function() {
-        //$("#comentario-opciones").hide(); 
-    });
-
-});
-
-    function setIdRespuesta(valor) {
-        $('input[name=id_respuesta]').val(valor)
-        //alert('hola mundo'+val);
-    }
-
-    function cargarRespueta(idComentario) {
-        $('#mostrar_respuesta'+idComentario).load("<?php echo base_url() ?>blog/get_resuestas_ajax", 
-            { id_comentario: idComentario }, function() {
-                console.log('Entro en el console log');
-        });
-    }
-</script>
+<?php 
+}
+else {
+?>
+<hr>
+<p><strong>Esta publicación tiene deshabilitado los comentarios</strong></p>
+<?php
+}
+?>

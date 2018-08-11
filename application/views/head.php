@@ -15,6 +15,8 @@
     <!-- jQuery -->
     <script src="<?= base_url()?>plantillas/js/jquery.min.js"></script>
     <script src='<?= base_url()?>plantillas/js/jquery.Jcrop.js'></script>
+	<!-- popper.js -->
+    <script src="<?= base_url()?>plantillas/js/popper.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= base_url()?>plantillas/js/bootstrap.min.js"></script>
