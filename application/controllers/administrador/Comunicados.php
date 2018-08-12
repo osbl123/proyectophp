@@ -10,7 +10,7 @@ class Comunicados extends CI_Controller
 	{
 		if(!$this->session->userdata('username'))
 		{
-			redirect(base_url().'admin');
+			redirect(base_url().'index');
 		}
 		$usuario=$this->session->userdata('username');
 		$data= array('titulo'=> 'Bienvenido');

@@ -32,7 +32,10 @@
               <a class="dropdown-item" href="<?= base_url()?>academico/evaluacion">Horario de evaluaciones</a>
             </div>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item">
+            <a class="nav-link " href="<?= base_url()?>academico/material_academico">Material de Apoyo</a>
+          </li>
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Material de Apoyo
             </a>
@@ -42,7 +45,7 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Tema 3</a>
             </div>
-          </li>
+          </li> -->
           <li class="nav-item ">
             <a class="nav-link" href="<?=site_url('publicaciones/pagina/')?>"><i class="fa ti-notepad"></i> Blog</a>
           </li>          

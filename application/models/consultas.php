@@ -220,7 +220,35 @@ class Consultas extends CI_Model
 		}			
 		
 	}
-
+	public function get_curso_est($cod_ceta) {
+		$gestion='';
+		$consulta=$this->db->query("SELECT valor from parametros_economicos WHERE parametro = 'gestion_cobro'");
+		if($consulta->num_rows()>0)
+			$gestion=$consulta->row()->valor;
+		$sql="SELECT cod_curso,registro_inscripcion.cod_pensum,registro_inscripcion.gestion FROM registro_inscripcion INNER JOIN grupo ON grupo.cod_pensum = registro_inscripcion.cod_pensum AND grupo.cod_grupo = registro_inscripcion.cod_curso AND grupo.gestion = registro_inscripcion.gestion WHERE cod_ceta = $cod_ceta AND registro_inscripcion.gestion = '$gestion'";
+		$get_cursos=$this->db->query($sql);
+		if($get_cursos->num_rows()>0)
+		{
+			return $get_cursos;			
+		}
+		else
+		{
+			return null;
+		}			
+	}
+	public function get_material($cod_curso,$cod_pensum,$gestion) {
+		$sql="SELECT est_material.id_material, titulo,contenido, nom_archivo,url, fecha, cod_materia,nombre_materia,nombre||' '||apellido_p||' '||apellido_m as nom_docente FROM est_material INNER JOIN est_material_grupo ON est_material_grupo.id_material = est_material.id_material INNER JOIN materia ON materia.sigla_materia = est_material.cod_materia INNER JOIN docente ON docente.cod_docente = est_material.cod_docente WHERE cod_grupo = '$cod_curso' AND cod_pensum = '$cod_pensum' AND gestion = '$gestion' ORDER BY nombre_materia ASC, fecha ";
+		$consulta=$this->db->query($sql);
+		if($consulta->num_rows()>0)
+		{
+			return $consulta;			
+		}
+		else
+		{
+			return null;
+		}			
+	}
+	
 	public function get_post_autor($id_post) {
 
 		$sql = "select ep.id_post,string_agg(d.nombre, ', ') as autor
