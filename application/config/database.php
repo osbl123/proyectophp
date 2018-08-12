@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.0.101',
+	'hostname' => 'localhost',
 	'username' => 'postgres',
-	'password' => 'sistemacetasga2012meaeea',
+	'password' => '.control.',
 	'database' => 'CetaWeb',
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',

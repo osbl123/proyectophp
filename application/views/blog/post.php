@@ -1,11 +1,29 @@
 
-<section>
-    <h3><?php echo $detalle->titulo; ?></h3>
-    <strong>Author:</strong> <?= $docente ?> <br>
-    <strong>Tema:</strong> <?= $detalle->tema ; ?> <br>
-    <strong>Fecha Publicacion:</strong> <?= $detalle->fecha; ?>
-    <?= $detalle->contenido;  ?>
-</section>
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title mb-3 text-center"><?php echo $detalle->titulo; ?></h2>
+
+                        <div class="d-flex justify-content-between w-100">
+                            <span style="display:inline-block;" class="text-muted"><strong>Author:</strong> <?= $docente ?></span>
+                            <span style="display:inline-block;" class="text-muted text-right"><strong>Tema:</strong> <?= $detalle->tema ; ?></span> 
+                        </div>
+                        <span class="text-muted"><strong>Fecha Publicacion:</strong><?= $detalle->fecha; ?></span>
+                    </div>
+                    <div class="card-body">
+                        
+                        <?= $detalle->contenido;  ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <?php 
 if($detalle->permite_comentario == 't') {
@@ -25,7 +43,7 @@ if($detalle->permite_comentario == 't') {
         <span><?php echo validation_errors(); ?></span>
         <div id="comentarios" class="d-flex align-items-center">
             <div class="align">
-                <img src="<?= base_url(); ?>plantillas/gallery/<?= $cod_ceta;?>.jpg" class="imagen" alt="Imagen estudiante">
+                <img src="<?= base_url(); ?>plantillas/img/usuario2.png" class="imagen" alt="Imagen estudiante">
             </div>
             <div class="w-100 pl-3">
                 <div>
