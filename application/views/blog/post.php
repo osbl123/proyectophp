@@ -43,7 +43,7 @@ if($detalle->permite_comentario == 't') {
         <span><?php echo validation_errors(); ?></span>
         <div id="comentarios" class="d-flex align-items-center">
             <div class="align">
-                <img src="<?= base_url(); ?>plantillas/img/usuario2.png" class="imagen" alt="Imagen estudiante">
+                <img src="<?= base_url(); ?>plantillas/gallery/<?= $cod_ceta ?>.jpg" class="imagen" alt="Imagen estudiante">
             </div>
             <div class="w-100 pl-3">
                 <div>
