@@ -27,9 +27,13 @@
         ?>
         <script src="<?= base_url() ?>plantillas/js/post_detalle.js"></script>
     <?php
-        }
+    }
+    if($this->uri->segment(1)=='blog') { 
     ?>
-
+        <script src="<?= base_url() ?>plantillas/js/list_post.js"></script>
+    <?php
+    }
+    ?>
 </body>
 
 </html>

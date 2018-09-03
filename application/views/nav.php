@@ -1,3 +1,4 @@
+</head>
 <body <?=$onLoad;?> >
     <div style="background-image: url(<?=base_url();?>plantillas/img/header.png); background-repeat: no-repeat; height: 100px; background-color: #2727C7; justify-content: flex-end; ">       
     </div>
@@ -47,7 +48,7 @@
             </div>
           </li> -->
           <li class="nav-item ">
-            <a class="nav-link" href="<?=site_url('publicaciones/pagina/')?>"><i class="fa ti-notepad"></i> Blog</a>
+            <a class="nav-link" href="<?=site_url('blog')?>"><i class="fa ti-notepad"></i> Blog</a>
           </li>          
          <!--  <li class="nav-item ">
             <a class="nav-link dropdown-toggle " href="<?= base_url()?>perfil">

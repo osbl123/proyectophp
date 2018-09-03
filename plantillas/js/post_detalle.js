@@ -6,6 +6,7 @@
      "cantidad":0,
      "mostrar":true
  };
+ var bloqueado = $("#block_coment").val() == 't';
  array_comments_open.push(objComentInicial);
 
 $(document).ready(function(){
@@ -59,7 +60,7 @@ $(document).ready(function(){
             return false;
         }else{
             
-            //si se agregar un respuesta es tipo 1
+            //si se agrega una respuesta es tipo 1
             if(tipo == '1') {
                 $.ajax({
                     url: baseurl+'blog/nueva_respuesta', //this is the submit URL
@@ -72,6 +73,7 @@ $(document).ready(function(){
                     success: function(data){
                         console.log('resultado agregar respuesta: '+data);
                         $("#exampleModal").modal('hide');
+                        actualizarComentarios();
                     }
                 });
                 
@@ -89,10 +91,6 @@ $(document).ready(function(){
                     }
                 });                
             }
-        }
-        //solo actualiza los comentario si se agrega una respuesta
-        if(tipo == '1') {
-            actualizarComentarios();
         }
     });
 
@@ -168,10 +166,19 @@ function actualizarComentarios() {
                 for(var k = 0;k< respuestas_a.length;k++) {
                     var id_coment = respuestas_a[k].id_comentario;
                     var respuestas = respuestas_a[k].respuestas;
-                    if($('#contenedor_respuesta_'+id_coment+' > button').length > 1) {
-                        $('#cant_respuesta_'+id_coment).html(respuestas)
+
+                    if(bloqueado) {
+                        if($('#contenedor_respuesta_'+id_coment+' > button').length > 0) {
+                            $('#cant_respuesta_'+id_coment).html(respuestas)
+                        } else {
+                            $('#contenedor_respuesta_'+id_coment).append( getButtonShowCantRespuestas(id_coment,respuestas));
+                        }
                     } else {
-                        $('#contenedor_respuesta_'+id_coment).append( getButtonShowCantRespuestas(id_coment,respuestas));
+                        if($('#contenedor_respuesta_'+id_coment+' > button').length > 1) {
+                            $('#cant_respuesta_'+id_coment).html(respuestas)
+                        } else {
+                            $('#contenedor_respuesta_'+id_coment).append( getButtonShowCantRespuestas(id_coment,respuestas));
+                        }
                     }
                 }
             }
@@ -237,14 +244,31 @@ var li = `<li class="">
                 </span>
             </div>
             <div class="w-100">
-                <div>
-                    <span><strong>`+nombre+`</strong></span>
-                    <span class="text-muted ml-1">Fecha: `+fecha+`</span>
+                <div class="d-flex">
+                    <div class="w-100">
+                        <div>
+                            <span><strong>`+nombre+`</strong></span>
+                            <span class="text-muted ml-1">Fecha: `+fecha+`</span>
+                        </div>
+                        <div name="respuestaComentario" class="mt-1">`+contenido+`</div>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button id="btn_denuncia" type="button" class="btn" style="width:40px;height:40px;border:0;border-radius: 50%;outline: none;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" style="color:red;" href="#" data-toggle="modal" data-target="#exampleModal" onClick="setIdComentarioDen('`+id_comentario+`')"><i class="fa fa-ban"></i> &nbsp;Denunciar</a>
+                        </div>
+                    </div>
                 </div>
-                <div name="respuestaComentario" class="mt-1">`+contenido+`</div>
+                
                 <div class="mt-1">
-                    <div id="contenedor_respuesta_`+id_comentario+`">
-                        <button type="button" id="btn_responder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" onclick="setIdRespuesta(`+id_comentario+`)">Responder</button>`;
+                    <div id="contenedor_respuesta_`+id_comentario+`">`;
+                
+                if(!bloqueado) {
+                    li += `<button type="button" id="btn_responder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" onclick="setIdRespuesta(`+id_comentario+`)">Responder</button>`;
+                }
+                
 var respuestas = parseInt(res);
 if(respuestas > 0) {
     li += getButtonShowCantRespuestas(id_comentario,respuestas);
@@ -256,14 +280,7 @@ li+=`               </div>
                     </div>
                 </div>
             </div>
-            <div class="btn-group" role="group">
-                <button id="btn_denuncia" type="button" class="btn" style="width:40px;height:40px;border:0;border-radius: 50%;outline: none;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" style="color:red;" href="#" data-toggle="modal" data-target="#exampleModal" onClick="setIdComentarioDen('`+id_comentario+`')"><i class="fa fa-ban"></i> &nbsp;Denunciar</a>
-                </div>
-            </div>
+            
         </div>
     </li>`;
 

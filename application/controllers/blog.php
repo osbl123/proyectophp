@@ -14,17 +14,10 @@ class Blog extends CI_Controller {
 		{
 			redirect(base_url().'index');
         }
-        $this->load->library('pagination');
-        $inicio = 0;
-        $limite = 2;
-        if($page !== FALSE) {
-            $inicio = ($page-1) * $limite; 
-        }
 
         $cod_ceta = $this->session->userdata('cod_est');
-        $lista_post = $this->consultas->get_list_post($cod_ceta,$inicio,$limite);
-        $comunicados=$this->consultas->get_comunicados($cod_ceta);
-
+        $comunicados = $this->consultas->get_comunicados($cod_ceta);
+/*
         $config['base_url'] = base_url() . 'publicaciones/pagina/';
         $config['total_rows'] =$this->consultas->count_list_post($cod_ceta);//Numero total de filas
         $config['per_page'] = $limite;//Numero de entradas por pagina
@@ -32,12 +25,12 @@ class Blog extends CI_Controller {
         //$config['first_url'] = $config['base_url'];
         $config['num_links'] = 3; //permite configurar el numero de  enlaces que se muetra
 
-        /*
-        $config['first_link'] = 'Primero';
-        $config['last_link'] = 'Ultimo';
-        $config['next_link'] = '&gt;';
-        $config['prev_link'] = '&lt;';
-*/
+        
+        // $config['first_link'] = 'Primero';
+        // $config['last_link'] = 'Ultimo';
+        // $config['next_link'] = '&gt;';
+        // $config['prev_link'] = '&lt;';
+
         $config['full_tag_open'] = '<ul class="paginador">';
         $config['full_tag_close'] = '</ul>';
         $config['first_tag_open'] = '<li>';
@@ -54,18 +47,18 @@ class Blog extends CI_Controller {
         $config['num_tag_close'] = '</li>';
 
         $this->pagination->initialize($config);
-
+*/
 		$fechaF = new Fechas();
         $data= array(
             'fecha'=>$fechaF->FechaFormateada()
             ,'cod_ceta'=> $this->session->userdata('cod_est')
             ,'nombre_est'=> $this->session->userdata('est_namefull')
             ,'onLoad'=>''
-            ,'articulos'=>$lista_post
             ,'comunicados'=>$comunicados
         );
         
-		$this->load->view("head",$data); 	
+        $this->load->view("head",$data); 	
+        $this->load->view("blog/list_post_header");
 		$this->load->view("nav");
 		$this->load->view("blog/list_post");
 		$this->load->view("footer");
@@ -76,8 +69,9 @@ class Blog extends CI_Controller {
 		{
 			redirect(base_url().'index');
         }
-        
-        $comunicados=$this->consultas->get_comunicados($this->session->userdata('cod_est'));
+        $cod_est = $this->session->userdata('cod_est');
+        $comunicados=$this->consultas->get_comunicados($cod_est);
+        $bloqueado = $this->consultas->is_blocked_est($cod_est);
 
         $fechaF = new Fechas();
         $post = $this->consultas->get_post($enlace);
@@ -93,6 +87,7 @@ class Blog extends CI_Controller {
             ,'docente'=> $autores->autor
             ,'comentarios'=>$comentarios
             ,'total_comentarios'=>$total_comentarios
+            ,'bloqueado'=>$bloqueado
         );
 
         $this->load->view("head",$data); 	
@@ -266,5 +261,43 @@ class Blog extends CI_Controller {
                 echo 'fallo al bloquear al estudiante';
             }
         }
+    }
+
+    function get_list_post() {
+		$start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$search = $this->input->post('search')['value'];
+		$column  = $this->input->post('order')[0]['column'];
+		$dir = $this->input->post('order')[0]['dir'];
+
+		$array_res = $this->consultas->get_list_post_table($start,$length,$search,$column,$dir);
+		$total_datos = $array_res['numDataTotal'];
+		$resultado = $array_res['datos'];
+
+		$datos = array();
+		foreach ($resultado->result_array() as $row) {
+			$array = array();
+            $array['id_post'] = $row['id_post'];
+            $array['carrera'] = $row['carrera'];
+            $array['titulo'] = $row['titulo'];
+            $array['tema'] = $row['tema'];
+            $array['fecha'] = timespan(strtotime($row['fecha']), time(), 2);
+            $array['permite_comentario'] = $row['permite_comentario'];
+            $array['enlace'] = $row['enlace'];
+            $array['descripcion'] = $row['descripcion'];
+
+			$datos[] = $array;
+		}
+		
+		$total_datos_obtenidos = $resultado->num_rows();
+
+		$json_data = array(
+			"draw" 				=>intval($this->input->post('draw')),	//
+			"problems" 				=>$column.'-'.$dir,                 //Utilizo para pasar algun dato cuando exista problemas
+			"recordsTotal"		=>intval($total_datos_obtenidos),	 	//Cantidad de registros obtenido   
+			"recordsFiltered"	=>intval($total_datos),					//Cantidad de registros Permite dibujar paginacion
+			"data"				=>$datos						//Pasa los datos en si
+		);
+        echo json_encode($json_data);
     }
 }

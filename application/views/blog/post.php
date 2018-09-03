@@ -23,19 +23,23 @@
     </div>
 </div>
 
-
+<input type="hidden" name="id_post" value="<?= $detalle->id_post ?>">
+<input type="hidden" name="block_coment" id="block_coment" value="<?= $bloqueado ?>">
 
 <?php 
 if($detalle->permite_comentario == 't') {
+
+    if($bloqueado == 't') {
+        echo '<div id="msg_bloqueado" class="alert alert-danger">Ud. Esta bloqueado no puede emitir, ni responder comentarios.</div>';
+        //echo "<p>Ud. Esta bloqueado no puede emitir comentarios</p>";
+    }
+    else {
 ?>
 <section>
     <hr>
     <?php
         $attributes = array('class' => 'form_comment', 'id' => 'formularioComentar');
-        $hidden = array(
-            'id_post' => $detalle->id_post
-        );
-        echo form_open('blog/nuevo_comentario',$attributes,$hidden);
+        echo form_open('blog/nuevo_comentario',$attributes);
     ?>
 
     <div class="xpanel">
@@ -47,7 +51,7 @@ if($detalle->permite_comentario == 't') {
             </div>
             <div class="w-100 pl-3">
                 <div>
-                    <p>vas a comentar de forma publica como <strong><?= $nombre_est ?></strong><span  class="fa fa-spinner fa-spin " id="spinner" ></span ></p>
+                    <p>Vas a comentar de forma publica como <strong><?= $nombre_est ?></strong><span  class="fa fa-spinner fa-spin " id="spinner" ></span ></p>
                     <textarea name="comentario" id="comentario" rows="1" placeholder ="Comparte tu opinión con el autor!" class="txt-comment style-scope iron-autogrow-textarea" autocomplete="off" required maxlength="500" ></textarea>
                 </div>
                 <div id="comentario-opciones" class="">
@@ -67,6 +71,11 @@ if($detalle->permite_comentario == 't') {
     <?= form_close(); ?> 
     <hr style="border-top:3px solid rgba(0,0,0,.1);">
 </section>
+<?php
+    }
+?>
+
+
 <section>
     <!--mostramos los comentarios si es que los hay-->      
     <div id="mostrar_respuesta" >

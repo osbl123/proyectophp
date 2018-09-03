@@ -55,4 +55,3 @@ function Reloj(){
     setInterval("Reloj()",1000) ;
 </script>
 
-</head>

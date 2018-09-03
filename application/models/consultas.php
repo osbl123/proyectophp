@@ -95,104 +95,85 @@ class Consultas extends CI_Model
 		return $query->row();
 	}
 
+	public function get_list_post_table($start,$length,$search,$column,$dir) {
+		$full_query_count ="select count(1) as counted from (
+			%s
+		) as tmp 
+		%s";
 
-	public function get_list_post($cod_ceta,$inicio = FALSE,$limite = FALSE) {
+		$query_records_pag ="select * from (
+			%s
+		) as tmp 
+		%s";
 
-		$sql = "WITH datos AS (
+		$query_search = '';
+		if(!is_null($search) && !empty($search)) {
+			$query_search = " where titulo LIKE '%{$search}%' or
+			descripcion LIKE '%{$search}%' ";
+		}
+
+		$sql = " WITH datos AS (
 			SELECT registro_inscripcion.cod_curso, semestre , registro_inscripcion.cod_pensum
 			FROM registro_inscripcion 
 			INNER JOIN gestion ON gestion.gestion = registro_inscripcion.gestion 
 			INNER JOIN grupo ON grupo.gestion = gestion.gestion 
 					AND grupo.cod_pensum = registro_inscripcion.cod_pensum 
 					AND grupo.cod_grupo = registro_inscripcion.cod_curso 
-			WHERE cod_ceta = '$cod_ceta' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC
+			WHERE cod_ceta = '120161453' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC
 		)
 		, carreras as 
 		(
-			SELECT distinct cod_pensum  from datos
+			SELECT distinct cod_pensum from datos
 		)
-		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
-				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
+		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema, ep.fecha,ep.permite_comentario,ep.enlace,ep.descripcion 
 		 FROM est_post as ep 
 		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
 			 WHERE activo = 't' and item = 'Todos'
 			 and ep.carrera in (select cod_pensum from carreras)
 		)
 			UNION
-		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
-				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion 
+		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema, ep.fecha,ep.permite_comentario,ep.enlace,ep.descripcion 
 		 FROM est_post as ep 
 		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 		
 		 WHERE activo = 't' AND item in (select semestre from datos where cod_pensum = ep.carrera)
 			 and ep.carrera in (select cod_pensum from carreras)
 		)	
 			UNION
-		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
-				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
+		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema, ep.fecha,ep.permite_comentario,ep.enlace,ep.descripcion 
 		 FROM est_post as ep 
 		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
 		 WHERE activo = 't' AND item in (select cod_curso from datos)
 			 and ep.carrera in (select cod_pensum from carreras)
-		)
-		ORDER BY fecha desc";
+		) ";
+		
+		$consulta_count = $this->db->query(sprintf($full_query_count,$sql,$query_search));
+		$query_num_record = $consulta_count->row()->counted;
 
-		if($inicio !== FALSE && $limite !== FALSE) {
-			$sql.=" LIMIT $limite OFFSET $inicio";
+		if(isset($column) and isset($dir)) {
+			if($column == '6') {
+				$query_search.=" order by fecha {$dir} ";
+			}	
 		}
 
-		$consulta=$this->db->query($sql);
-
-		if($consulta->num_rows()>0)
-		{
-			return $consulta->result();
-		} else {
-			return null;
+		if($length != '-1') {
+			$query_search.=" limit $length OFFSET $start ";
 		}
+
+		$consulta=$this->db->query(sprintf($query_records_pag,$sql,$query_search));
+		$retornar = array(
+			'numDataTotal' => $query_num_record,
+			'datos' => $consulta
+		);
+
+		return $retornar;
 	}
 
-	public function count_list_post($cod_ceta) {
-
-		$sql = "WITH datos AS (
-			SELECT registro_inscripcion.cod_curso, semestre , registro_inscripcion.cod_pensum
-			FROM registro_inscripcion 
-			INNER JOIN gestion ON gestion.gestion = registro_inscripcion.gestion 
-			INNER JOIN grupo ON grupo.gestion = gestion.gestion 
-					AND grupo.cod_pensum = registro_inscripcion.cod_pensum 
-					AND grupo.cod_grupo = registro_inscripcion.cod_curso 
-			WHERE cod_ceta = '$cod_ceta' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC
-		)
-		, carreras as 
-		(
-			SELECT distinct cod_pensum  from datos
-		)
-		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
-				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
-		 FROM est_post as ep 
-		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
-			 WHERE activo = 't' and item = 'Todos'
-			 and ep.carrera in (select cod_pensum from carreras)
-		)
-			UNION
-		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
-				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion 
-		 FROM est_post as ep 
-		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 		
-		 WHERE activo = 't' AND item in (select semestre from datos where cod_pensum = ep.carrera)
-			 and ep.carrera in (select cod_pensum from carreras)
-		)	
-			UNION
-		(SELECT ep.id_post, ep.carrera, ep.titulo, ep.tema,ep.enlace, 
-				 ep.fecha,ep.activo,ep.permite_comentario,ep.contenido,ep.descripcion
-		 FROM est_post as ep 
-		 INNER JOIN est_post_poblacion as epp ON epp.id_post = ep.id_post 
-		 WHERE activo = 't' AND item in (select cod_curso from datos)
-			 and ep.carrera in (select cod_pensum from carreras)
-		)
-		ORDER BY fecha desc";
-
+	public function is_blocked_est($cod_est) {
+		$sql = "select bloqueado 
+		from est_password
+		where cod_ceta = '{$cod_est}'";
 		$consulta=$this->db->query($sql);
-
-		return $consulta->num_rows();
+		return $consulta->row()->bloqueado;
 	}
 
 	public function get_comunicados($cod_ceta) {
