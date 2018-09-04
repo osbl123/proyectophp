@@ -241,7 +241,7 @@ var li = `<li class="">
         <div class="d-flex mt-3">
             <div class="mr-3">
                 <span >
-                    <img class="imagen" src="`+baseurl+`plantillas/gallery/`+cod_ceta+`.jpg" alt="imagen estudiante" />
+                    <img class="imagen" src="`+baseurl+`plantillas/gallery/`+cod_ceta+`.jpg" alt="imagen estudiante" onerror="this.src='`+baseurl+`plantillas/gallery/user0.jpg'" />
                 </span>
             </div>
             <div class="w-100">
