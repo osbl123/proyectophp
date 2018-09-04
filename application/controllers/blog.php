@@ -264,13 +264,14 @@ class Blog extends CI_Controller {
     }
 
     function get_list_post() {
+        $cod_est = $this->session->userdata('cod_est');
 		$start = $this->input->post('start');
 		$length = $this->input->post('length');
 		$search = $this->input->post('search')['value'];
 		$column  = $this->input->post('order')[0]['column'];
 		$dir = $this->input->post('order')[0]['dir'];
 
-		$array_res = $this->consultas->get_list_post_table($start,$length,$search,$column,$dir);
+		$array_res = $this->consultas->get_list_post_table($start,$length,$search,$column,$dir,$cod_est);
 		$total_datos = $array_res['numDataTotal'];
 		$resultado = $array_res['datos'];
 

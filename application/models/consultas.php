@@ -95,7 +95,7 @@ class Consultas extends CI_Model
 		return $query->row();
 	}
 
-	public function get_list_post_table($start,$length,$search,$column,$dir) {
+	public function get_list_post_table($start,$length,$search,$column,$dir,$cod_est) {
 		$full_query_count ="select count(1) as counted from (
 			%s
 		) as tmp 
@@ -119,7 +119,7 @@ class Consultas extends CI_Model
 			INNER JOIN grupo ON grupo.gestion = gestion.gestion 
 					AND grupo.cod_pensum = registro_inscripcion.cod_pensum 
 					AND grupo.cod_grupo = registro_inscripcion.cod_curso 
-			WHERE cod_ceta = '120161453' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC
+			WHERE cod_ceta = '{$cod_est}' AND tipo_inscripcion='NORMAL' ORDER BY fecha_inicio DESC
 		)
 		, carreras as 
 		(
