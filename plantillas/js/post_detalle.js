@@ -20,6 +20,7 @@ $(document).ready(function(){
 
         if( $("#comentario").val().length <= 5){
             $("#comentario").focus().after(alert('Escriba como mínimo 6 carácteres para el comentario'));
+            $('#comentario').prop('disabled', false);
             return false;
         }else{
             $.ajax({

@@ -72,6 +72,7 @@ class Blog extends CI_Controller {
         $cod_est = $this->session->userdata('cod_est');
         $comunicados=$this->consultas->get_comunicados($cod_est);
         $bloqueado = $this->consultas->is_blocked_est($cod_est);
+        $comunicados = $this->consultas->get_comunicados($cod_est);
 
         $fechaF = new Fechas();
         $post = $this->consultas->get_post($enlace);
@@ -88,6 +89,7 @@ class Blog extends CI_Controller {
             ,'comentarios'=>$comentarios
             ,'total_comentarios'=>$total_comentarios
             ,'bloqueado'=>$bloqueado
+            ,'comunicados'=>$comunicados
         );
 
         $this->load->view("head",$data); 	
